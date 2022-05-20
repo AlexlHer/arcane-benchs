@@ -61,6 +61,7 @@ jobs:
           spack env list
           spack env activate arcane
           spack find
+          echo $PATH
 
       - name: Configure3
         shell: bash
