@@ -48,7 +48,7 @@ jobs:
           spack load arcane
           spack load cmake
           export ARCANE_INSTALL_PATH=`spack find --format "{prefix}" arcane`
-          cmake -S ${{ env.QS_SOURCE_DIR }} -B ${{ env.QS_BUILD_DIR }} -DCMAKE_PREFIX_PATH=${ARCANE_INSTALL_PATH} -DCMAKE_BUILD_TYPE=${QS_BUILD_TYPE}
+          cmake -S ${{ env.QS_SOURCE_DIR }}/quicksilver -B ${{ env.QS_BUILD_DIR }} -DCMAKE_PREFIX_PATH=${ARCANE_INSTALL_PATH} -DCMAKE_BUILD_TYPE=${QS_BUILD_TYPE}
 
       - name: Build
         shell: bash
@@ -59,4 +59,4 @@ jobs:
 
       - name: Test
         shell: bash
-        run: ${{ env.QS_BUILD_DIR }}/src/Quicksilver -A,T=2 ${{ env.QS_SOURCE_DIR }}/data/ExampleFull.arc
+        run: ${{ env.QS_BUILD_DIR }}/src/Quicksilver -A,T=2 ${{ env.QS_SOURCE_DIR }}/quicksilver/data/ExampleFull.arc
