@@ -1,0 +1,64 @@
+name: Build/Tests GCC-11
+
+on:
+  push:
+    branches: [ main, dev/cea ]
+  pull_request:
+    branches: [ main, dev/cea ]
+  # A executer que lorsque l'on demande.
+  workflow_dispatch:
+
+env:
+
+  QS_BUILD_TYPE: Release
+  QS_BUILD_DIR: '/__w/arcane-benchs/arcane-benchs/qs_build'
+  QS_SOURCE_DIR: '/__w/arcane-benchs/arcane-benchs/qs'
+
+  # ccache
+  CC_KEY_PREFIX: 'gcc-11'
+  CCACHE_COMPRESS: true
+  CCACHE_COMPRESSLEVEL: 6
+  CCACHE_DIR: '/__w/framework/framework/ccache'
+  CCACHE_MAXSIZE: 5G
+
+  # CMake
+  CM_BUILD_OPTS: "-j2"
+  CM_CCACHE_OPTS: "-DCMAKE_CXX_COMPILER_LAUNCHER=ccache"
+  CM_COMPILER: '-DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++'
+
+  # CTest
+  CT_OPTS: "--timeout 300 --output-on-failure"
+
+  # MPI
+  OMPI_ALLOW_RUN_AS_ROOT: 1
+  OMPI_ALLOW_RUN_AS_ROOT_CONFIRM: 1
+
+jobs:
+  tests:
+    name: tests
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/arcaneframework/arcane-spack-ubuntu20.04:main-20220518
+    strategy:
+      fail-fast: false
+    steps:
+
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          path: ${{ env.QS_SOURCE_DIR }}
+
+      - name: Configure
+        shell: bash
+        run: |
+          spack env activate arcane
+          export ARCANE_INSTALL_PATH=`which arcane`
+          cmake -S ${{ env.QS_SOURCE_DIR }} -B ${{ env.QS_BUILD_DIR }} -DCMAKE_PREFIX_PATH=${ARCANE_INSTALL_PATH} -DCMAKE_BUILD_TYPE=${QS_BUILD_TYPE}
+
+      - name: Build
+        shell: bash
+        run: cmake --build ${{ env.QS_BUILD_DIR }} -- ${{ env.CM_BUILD_OPTS }}
+
+      - name: Test
+        shell: bash
+        run: ${{ env.QS_BUILD_DIR }}/src/Quicksilver -A,T=2 ${{ env.QS_SOURCE_DIR }}/data/ExampleFull.arc
