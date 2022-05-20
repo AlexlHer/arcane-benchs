@@ -55,6 +55,12 @@ jobs:
           source /spack/share/spack/setup-env.sh
           spack env activate arcane
           which arcane
+
+      - name: Configure2
+        shell: bash
+        run: |
+          source /spack/share/spack/setup-env.sh
+          spack env activate arcane
           which cmake
 
       - name: Build
