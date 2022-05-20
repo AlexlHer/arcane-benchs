@@ -53,17 +53,6 @@ jobs:
         shell: bash
         run: |
           . /spack/share/spack/setup-env.sh
-          spack env list
-          spack env activate arcane
-          spack find
-          echo $PATH
-
-      - name: Configure2
-        shell: bash
-        run: |
-          . /spack/share/spack/setup-env.sh
-          spack env list
-          spack env activate arcane
           spack find
           echo $PATH
           spack load cmake
@@ -71,19 +60,17 @@ jobs:
           echo "abcdefg"
           which cmake
 
-      - name: Configure2
+      - name: Configure1
         shell: bash
         run: |
           . /spack/share/spack/setup-env.sh
-          spack env list
-          spack env activate arcane
           spack find
           echo $PATH
           spack load arcane
           echo $PATH
           echo "abcdefg"
           which arcane
-          
+
       - name: Build
         shell: bash
         run: cmake --build ${{ env.QS_BUILD_DIR }} -- ${{ env.CM_BUILD_OPTS }}
