@@ -54,22 +54,12 @@ jobs:
         run: |
           . /spack/share/spack/setup-env.sh
           spack find
-          echo $PATH
-          spack load cmake
-          echo $PATH
-          echo "abcdefg"
-          which cmake
-
-      - name: Configure1
-        shell: bash
-        run: |
-          . /spack/share/spack/setup-env.sh
-          spack find
-          echo $PATH
           spack load arcane
           echo $PATH
           echo "abcdefg"
-          which arcane
+          which cmake
+          spack find --format "{prefix}" arcane
+          spack find --format "{prefix}" cmake
 
       - name: Build
         shell: bash
