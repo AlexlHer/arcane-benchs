@@ -52,6 +52,7 @@ jobs:
       - name: Configure
         shell: bash
         run: |
+          source /spack/share/spack/setup-env.sh
           spack env activate arcane
           export ARCANE_INSTALL_PATH=`which arcane`
           cmake -S ${{ env.QS_SOURCE_DIR }} -B ${{ env.QS_BUILD_DIR }} -DCMAKE_PREFIX_PATH=${ARCANE_INSTALL_PATH} -DCMAKE_BUILD_TYPE=${QS_BUILD_TYPE}
