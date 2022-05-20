@@ -58,14 +58,16 @@ jobs:
         shell: bash
         run: |
           . /spack/share/spack/setup-env.sh
+          spack env list
           spack env activate arcane
+          spack find
 
       - name: Configure3
         shell: bash
         run: |
           . /spack/share/spack/setup-env.sh
           spack env activate arcane
-          which arcane
+          which cmake
 
       - name: Build
         shell: bash
