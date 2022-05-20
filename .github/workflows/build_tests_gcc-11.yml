@@ -41,7 +41,7 @@ jobs:
       image: ghcr.io/arcaneframework/arcane-spack-ubuntu20.04:main-20220518
       options: --user root
     strategy:
-      fail-fast: false
+      fail-fast: true
     steps:
 
       - name: Checkout
@@ -56,8 +56,6 @@ jobs:
           spack env activate arcane
           which arcane
           which cmake
-          export ARCANE_INSTALL_PATH=`which arcane`
-          cmake -S ${{ env.QS_SOURCE_DIR }} -B ${{ env.QS_BUILD_DIR }} -DCMAKE_PREFIX_PATH=${ARCANE_INSTALL_PATH} -DCMAKE_BUILD_TYPE=${QS_BUILD_TYPE}
 
       - name: Build
         shell: bash
