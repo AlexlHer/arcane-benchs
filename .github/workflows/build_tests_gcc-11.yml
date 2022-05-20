@@ -68,6 +68,8 @@ jobs:
           echo $PATH
           spack load cmake
           echo $PATH
+          echo "abcdefg"
+          which cmake
 
       - name: Configure2
         shell: bash
@@ -79,7 +81,9 @@ jobs:
           echo $PATH
           spack load arcane
           echo $PATH
-
+          echo "abcdefg"
+          which arcane
+          
       - name: Build
         shell: bash
         run: cmake --build ${{ env.QS_BUILD_DIR }} -- ${{ env.CM_BUILD_OPTS }}
