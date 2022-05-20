@@ -41,7 +41,7 @@ jobs:
       image: ghcr.io/arcaneframework/arcane-spack-ubuntu20.04:main-20220518
       options: --user root
     strategy:
-      fail-fast: true
+      fail-fast: false
     steps:
 
       - name: Checkout
@@ -53,6 +53,10 @@ jobs:
         shell: bash
         run: |
           . /spack/share/spack/setup-env.sh
+          spack env list
+          spack env activate arcane
+          spack find
+          echo $PATH
 
       - name: Configure2
         shell: bash
@@ -62,13 +66,19 @@ jobs:
           spack env activate arcane
           spack find
           echo $PATH
+          spack load cmake
+          echo $PATH
 
-      - name: Configure3
+      - name: Configure2
         shell: bash
         run: |
           . /spack/share/spack/setup-env.sh
+          spack env list
           spack env activate arcane
-          which cmake
+          spack find
+          echo $PATH
+          spack load arcane
+          echo $PATH
 
       - name: Build
         shell: bash
